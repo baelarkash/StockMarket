@@ -21,12 +21,12 @@ namespace StockMarket.Utils
 
         public static Delegate GenerateDelegate(string expression,List<ParameterExpression> parameters)
         {
-            var internalExpression = new List<ComplexExpression>();            
+            var internalExpression = new List<ComplexExpression>();
+            expression = GenerateExpression(ExpressionEnumerables.operations.NEGATE, expression, internalExpression, parameters);
             expression = GenerateExpression(ExpressionEnumerables.operations.MULTIPLY, expression,internalExpression,parameters);
             expression = GenerateExpression(ExpressionEnumerables.operations.DIVIDE, expression, internalExpression, parameters);
             expression = GenerateExpression(ExpressionEnumerables.operations.SUM, expression, internalExpression, parameters);
-            expression = GenerateExpression(ExpressionEnumerables.operations.SUBTRACT, expression, internalExpression, parameters);
-            expression = GenerateExpression(ExpressionEnumerables.operations.NEGATE, expression, internalExpression, parameters);
+            expression = GenerateExpression(ExpressionEnumerables.operations.SUBTRACT, expression, internalExpression, parameters);            
             var lambda =  Expression.Lambda(internalExpression.Last().Expression, parameters.ToArray());
             return lambda.Compile();            
         }
@@ -122,7 +122,7 @@ namespace StockMarket.Utils
                     expReg = "\\w+[-]\\w+";
                     splitChar = '-'; break;
                 case (ExpressionEnumerables.operations.NEGATE):
-                    expReg = "[-]\\w+"; 
+                    expReg = "(?:[+*/ -])([-]\\w+)"; 
                     splitChar = '-';break;
                 case (ExpressionEnumerables.operations.DIVIDE):
                     expReg = "\\w+[/]\\w+";

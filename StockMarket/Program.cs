@@ -11,7 +11,8 @@ namespace StockMarket
     {
         static void Main(string[] args)
         {
-            var demandCurve = new DemandCurve(string.Empty, "((a+b)-(a+b)*(a+b))/(-2b)");
+            var demandCurve = new DemandCurve(string.Empty, "((a+b)-(a+b)*(a+b))/-2b");
+            //var demandCurve = new DemandCurve(string.Empty, "a+b+c");
 
             List<Parameter> variables = new List<Parameter>();
             variables.Add(new Parameter() { name = "a", parameter = (object)1m });
@@ -20,7 +21,7 @@ namespace StockMarket
             var result = demandCurve.EvalDemandCurve(variables);
             ///TODO Expresiones del tipo (a+b)(a+b)
             ///TODO Expresiones del modulo Math (log,exp...)
-            
+            ///TODO Error con ((a+b)-(a+b)*(a+b))/-2b Problema con negate
         }
     }
 }
