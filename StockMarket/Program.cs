@@ -13,14 +13,15 @@ namespace StockMarket
         {
             //Console.WriteLine("Hello World!");
 
-            var demandCurve = new DemandCurve(string.Empty, "(a+b)+(a+b)");
+            var demandCurve = new DemandCurve(string.Empty, "((a+b)-(a+b)*(a+b))/-b");
 
             List<Parameter> variables = new List<Parameter>();
             variables.Add(new Parameter() { name = "a", parameter = (object)1m });
             variables.Add(new Parameter() { name = "b", parameter = (object)2m });
             variables.Add(new Parameter() { name = "c", parameter = (object)3m });
             var result = demandCurve.EvalDemandCurve(variables);
-
+            ///TODO: Constants
+            ///TODO: Negate variables
         }
     }
 }

@@ -122,7 +122,7 @@ namespace StockMarket.Utils
                 foreach (var match in matches)
                 {
                     var values = match.ToString().Split(splitChar);
-                    var expression = GenerateOperation(splitChar.ToString(), CheckParameter(values[0], parameters, expressionList), CheckParameter(values[1], parameters, expressionList));
+                    var expression = GenerateOperation(operation, CheckParameter(values[0], parameters, expressionList), CheckParameter(values[1], parameters, expressionList));
                     string varName = "internal_val_" + expressionList.Count().ToString();
                     expressionList.Add(new ComplexExpression() { Expression = expression, VariableName = varName });
                     input = input.Replace(match.ToString(), varName);
@@ -131,21 +131,21 @@ namespace StockMarket.Utils
             }
             return input;
         }
-        private static Expression GenerateOperation(string operand,Expression left,Expression right)
+        private static Expression GenerateOperation(ExpressionEnumerables.operations operation, Expression left,Expression right)
         {
             Expression exp = null;
-            switch (operand)
+            switch (operation)
             {
-                case ("+"):
+                case (ExpressionEnumerables.operations.SUM):
                     exp = Expression.Add(left, right);
                     break;
-                case ("-"):
+                case (ExpressionEnumerables.operations.SUBTRACT):
                     exp = Expression.Subtract(left, right);
                     break;
-                case ("*"):
+                case (ExpressionEnumerables.operations.MULTIPLY):
                     exp = Expression.Multiply(left, right);
                     break;
-                case ("/"):
+                case (ExpressionEnumerables.operations.DIVIDE):
                     exp = Expression.Divide(left, right);
                     break;
                 default:
