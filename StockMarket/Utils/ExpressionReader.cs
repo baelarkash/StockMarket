@@ -37,10 +37,13 @@ namespace StockMarket.Utils
             var matches = regex.Matches(expression);
             if (matches.Count > 0)
             {
-                foreach (var match in matches)
+                int accumulativeLenghtChange = 0;
+                foreach (Match match in matches)
                 {
                     string variable = "internal_var_" + variables.Count().ToString();
-                    expression = expression.Replace(match.ToString(), variable);
+                    //expression = expression.Replace(match.ToString(), variable);
+                    expression= expression.Substring(0, accumulativeLenghtChange + match.Index) + variable + expression.Substring(accumulativeLenghtChange + match.Index + match.Length);
+                    accumulativeLenghtChange += variable.Length - match.Length;
                     var parameters = new List<ParameterExpression>();
                     var function = GenerateDelegate(match.ToString().Replace("(", "").Replace(")", ""), parameters);
                     delegates.Add(new InternalFunction { function = function, variableName = variable, parameters = parameters.Select(x => x.Name).ToList() });
