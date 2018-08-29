@@ -21,11 +21,12 @@ namespace StockMarket.Utils
 
         public static Delegate GenerateDelegate(string expression,List<ParameterExpression> parameters)
         {
-            var internalExpression = new List<ComplexExpression>();
+            var internalExpression = new List<ComplexExpression>();            
             expression = GenerateExpression(ExpressionEnumerables.operations.MULTIPLY, expression,internalExpression,parameters);
             expression = GenerateExpression(ExpressionEnumerables.operations.DIVIDE, expression, internalExpression, parameters);
             expression = GenerateExpression(ExpressionEnumerables.operations.SUM, expression, internalExpression, parameters);
             expression = GenerateExpression(ExpressionEnumerables.operations.SUBTRACT, expression, internalExpression, parameters);
+            expression = GenerateExpression(ExpressionEnumerables.operations.NEGATE, expression, internalExpression, parameters);
             var lambda =  Expression.Lambda(internalExpression.Last().Expression, parameters.ToArray());
             return lambda.Compile();            
         }
@@ -64,37 +65,46 @@ namespace StockMarket.Utils
         private static Expression CheckParameter(string name, List<ParameterExpression> parameters,List<ComplexExpression> expressions)
         {
             //TODO: Mejorar
-            var reg = new Regex("^[\\d]+");
-            var match = reg.Matches(name);
-            Expression expression;
-            if (match.Count > 0)
+            if (!string.IsNullOrEmpty(name))
             {
-                name = name.Replace(match[0].ToString(), "");
+                var reg = new Regex("^[\\d]+");
+                var match = reg.Matches(name);
+                Expression expression;
+                if (match.Count > 0)
+                {
+                    name = name.Replace(match[0].ToString(), "");
+                }
+                if (string.IsNullOrEmpty(name))
+                {
+                    var multiply = decimal.Parse(match[0].ToString());
+                    return Expression.Constant(multiply);
+                }
+                var value = expressions.FirstOrDefault(x => x.VariableName == name);
+                if (value != null)
+                {
+                    expression = value.Expression;
+                }
+                else if (parameters.FirstOrDefault(x => x.Name == name) == null)
+                {
+                    var parameter = Expression.Variable(typeof(decimal), name);
+                    parameters.Add(parameter);
+                    expression = parameter;
+                }
+                else
+                {
+                    expression = parameters.FirstOrDefault(x => x.Name == name);
+                }
+                if (match.Count > 0)
+                {
+                    var multiply = decimal.Parse(match[0].ToString());
+                    return Expression.Multiply(Expression.Constant(multiply), expression);
+                }
+                else
+                {
+                    return expression;
+                }
             }
-            var value = expressions.FirstOrDefault(x => x.VariableName == name);
-            if (value!=null)
-            {
-                expression = value.Expression;
-            }
-            else if (parameters.FirstOrDefault(x => x.Name == name) == null)
-            {
-                var parameter = Expression.Variable(typeof(decimal), name);
-                parameters.Add(parameter);
-                expression = parameter;
-            }
-            else
-            {
-                expression = parameters.FirstOrDefault(x => x.Name == name);
-            }
-            if (match.Count > 0)
-            {
-                var multiply = decimal.Parse(match[0].ToString());
-                return Expression.Multiply(Expression.Constant(multiply), expression);
-            }
-            else
-            {
-                return expression;
-            }
+            return null;
         }
         private static string GenerateExpression(ExpressionEnumerables.operations operation,string input, List<ComplexExpression> expressionList,List<ParameterExpression> parameters)
         {
@@ -109,7 +119,10 @@ namespace StockMarket.Utils
                     expReg = "\\w+[+]\\w+"; 
                     splitChar = '+';break;
                 case (ExpressionEnumerables.operations.SUBTRACT):
-                    expReg = "\\w+[-]\\w+"; 
+                    expReg = "\\w+[-]\\w+";
+                    splitChar = '-'; break;
+                case (ExpressionEnumerables.operations.NEGATE):
+                    expReg = "[-]\\w+"; 
                     splitChar = '-';break;
                 case (ExpressionEnumerables.operations.DIVIDE):
                     expReg = "\\w+[/]\\w+";
@@ -147,6 +160,9 @@ namespace StockMarket.Utils
                     break;
                 case (ExpressionEnumerables.operations.DIVIDE):
                     exp = Expression.Divide(left, right);
+                    break;
+                case (ExpressionEnumerables.operations.NEGATE):
+                    exp = Expression.Negate(right);
                     break;
                 default:
                     break;

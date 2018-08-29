@@ -13,7 +13,8 @@ namespace StockMarket.Enumerables
             SUM,
             SUBTRACT,
             MULTIPLY,
-            DIVIDE
+            DIVIDE,
+            NEGATE
         }
     }
 }
