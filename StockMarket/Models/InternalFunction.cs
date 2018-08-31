@@ -11,5 +11,6 @@ namespace StockMarket.Models
         public Delegate function { get; set; }
         public string variableName { get; set; }
         public List<string> parameters { get; set; }
+        public string expressionLiteral { get; set; }
     }
 }

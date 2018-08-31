@@ -20,8 +20,7 @@ namespace StockMarket
             variables.Add(new Parameter() { name = "c", parameter = (object)3m });
             var result = demandCurve.EvalDemandCurve(variables);
             ///TODO Expresiones del tipo (a+b)(a+b)
-            ///TODO Expresiones del modulo Math (log,exp...)
-            ///TODO Error con ((a+b)-(a+b)*(a+b))/-2b Problema con negate
+            ///TODO Expresiones del modulo Math (log,exp...)            
         }
     }
 }

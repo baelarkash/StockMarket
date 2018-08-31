@@ -26,7 +26,8 @@ namespace StockMarket.Utils
             expression = GenerateExpression(ExpressionEnumerables.operations.MULTIPLY, expression,internalExpression,parameters);
             expression = GenerateExpression(ExpressionEnumerables.operations.DIVIDE, expression, internalExpression, parameters);
             expression = GenerateExpression(ExpressionEnumerables.operations.SUM, expression, internalExpression, parameters);
-            expression = GenerateExpression(ExpressionEnumerables.operations.SUBTRACT, expression, internalExpression, parameters);            
+            expression = GenerateExpression(ExpressionEnumerables.operations.SUBTRACT, expression, internalExpression, parameters);
+            
             var lambda =  Expression.Lambda(internalExpression.Last().Expression, parameters.ToArray());
             return lambda.Compile();            
         }
@@ -41,13 +42,14 @@ namespace StockMarket.Utils
                 int accumulativeLenghtChange = 0;
                 foreach (Match match in matches)
                 {
+                    var expressionLiteral = match.ToString();
                     string variable = "internal_var_" + variables.Count().ToString();
                     //expression = expression.Replace(match.ToString(), variable);
                     expression= expression.Substring(0, accumulativeLenghtChange + match.Index) + variable + expression.Substring(accumulativeLenghtChange + match.Index + match.Length);
                     accumulativeLenghtChange += variable.Length - match.Length;
                     var parameters = new List<ParameterExpression>();
                     var function = GenerateDelegate(match.ToString().Replace("(", "").Replace(")", ""), parameters);
-                    delegates.Add(new InternalFunction { function = function, variableName = variable, parameters = parameters.Select(x => x.Name).ToList() });
+                    delegates.Add(new InternalFunction { expressionLiteral= expressionLiteral, function = function, variableName = variable, parameters = parameters.Select(x => x.Name).ToList() });
                     variables.Add(variable);
                 }
             }
@@ -113,19 +115,19 @@ namespace StockMarket.Utils
             switch (operation)
             {
                 case (ExpressionEnumerables.operations.MULTIPLY):
-                    expReg = "\\w+[*]\\w+"; 
+                    expReg = "(\\w+[*]\\w+)"; 
                     splitChar = '*';break;
                 case (ExpressionEnumerables.operations.SUM):
-                    expReg = "\\w+[+]\\w+"; 
+                    expReg = "(\\w+[+]\\w+)"; 
                     splitChar = '+';break;
                 case (ExpressionEnumerables.operations.SUBTRACT):
-                    expReg = "\\w+[-]\\w+";
+                    expReg = "(\\w+[-]\\w+)";
                     splitChar = '-'; break;
                 case (ExpressionEnumerables.operations.NEGATE):
-                    expReg = "(?:[+*/ -])([-]\\w+)"; 
+                    expReg = "(?:[(+*/ -)])([-]\\w+)";
                     splitChar = '-';break;
                 case (ExpressionEnumerables.operations.DIVIDE):
-                    expReg = "\\w+[/]\\w+";
+                    expReg = "(\\w+[/]\\w+)";
                     splitChar = '/'; break;
             }
             var regex = new Regex(expReg);
@@ -134,11 +136,15 @@ namespace StockMarket.Utils
             {
                 foreach (var match in matches)
                 {
-                    var values = match.ToString().Split(splitChar);
+                    var item = ((Match)match).Groups[1].Value;
+                    //((System.Text.RegularExpressions.Group)match).Captures[0].Value
+                    //((System.Text.RegularExpressions.Group)(new System.Linq.SystemCore_EnumerableDebugView(((System.Text.RegularExpressions.Match)match).Groups).Items[1])).Name
+
+                    var values = item.Split(splitChar);
                     var expression = GenerateOperation(operation, CheckParameter(values[0], parameters, expressionList), CheckParameter(values[1], parameters, expressionList));
                     string varName = "internal_val_" + expressionList.Count().ToString();
                     expressionList.Add(new ComplexExpression() { Expression = expression, VariableName = varName });
-                    input = input.Replace(match.ToString(), varName);
+                    input = input.Replace(item, varName);
                 }
                 matches = regex.Matches(input);
             }
