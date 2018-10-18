@@ -11,11 +11,12 @@ namespace StockMarket.Models
     public class DemandCurve
     {
         public string Name { get; set; }
+        public string expressionLiteral { get; set; }
         public List<InternalFunction> Function { get; set; }
         public List<string> Parameters { get; set; }
         public DemandCurve(string name, string expression)
         {
-            
+            expressionLiteral = expression;
             Name = name;
             if (!string.IsNullOrEmpty(expression))
             {
