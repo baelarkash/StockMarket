@@ -17,6 +17,7 @@ namespace StockMarket.Models
         public DemandCurve(string name, string expression)
         {
             expressionLiteral = expression;
+
             Name = name;
             if (!string.IsNullOrEmpty(expression))
             {
