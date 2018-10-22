@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
+
 namespace StockMarket.Models
 {
     public class DemandCurve
@@ -17,14 +18,13 @@ namespace StockMarket.Models
         public DemandCurve(string name, string expression)
         {
             expressionLiteral = expression;
-
             Name = name;
             if (!string.IsNullOrEmpty(expression))
             {
                 Function = Utils.ExpressionReader.CreateExpression(expression,Parameters);
             }
         }
-        public decimal EvalDemandCurve(List<Parameter> parameters)
+        public double EvalDemandCurve(List<Parameter> parameters)
         {
 
             List<Parameter> intermediateValues = new List<Parameter>();
@@ -49,7 +49,7 @@ namespace StockMarket.Models
             }
             
             
-            return (decimal)intermediateValues.Last().parameter;
+            return (double)intermediateValues.Last().parameter;
         }
 
     }

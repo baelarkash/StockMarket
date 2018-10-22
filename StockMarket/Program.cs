@@ -11,18 +11,21 @@ namespace StockMarket
     {
         static void Main(string[] args)
         {
-            var demandCurve = new DemandCurve(string.Empty, "((a+b)-(a+b)*(a+b))/-2b");
+            //var demandCurve = new DemandCurve(string.Empty, "((a+b)-(a+b)*(a+b))/-2b");
+            var demandCurve = new DemandCurve(string.Empty, "3a-1");
             //var demandCurve = new DemandCurve(string.Empty, "a+b+c");
 
             List<Parameter> variables = new List<Parameter>();
-            variables.Add(new Parameter() { name = "a", parameter = (object)1m });
-            variables.Add(new Parameter() { name = "b", parameter = (object)2m });
-            variables.Add(new Parameter() { name = "c", parameter = (object)3m });
+            variables.Add(new Parameter() { name = "a", parameter = (object)3.1 });
+            //variables.Add(new Parameter() { name = "b", parameter = (object)2m });
+            //variables.Add(new Parameter() { name = "c", parameter = (object)3m });
             var result = demandCurve.EvalDemandCurve(variables);
             string a = string.Empty;
             string b = string.Empty;
+            
             ///TODO Expresiones del tipo (a+b)(a+b)
-            ///TODO Expresiones del modulo Math (log,exp...)            
+            ///TODO Expresiones del modulo Math (log...)  
+            ///TODO Crear funcion para la integral de la funcion original dentro de demandCurve
         }
     }
 }

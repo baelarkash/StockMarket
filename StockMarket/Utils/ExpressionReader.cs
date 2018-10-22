@@ -22,6 +22,7 @@ namespace StockMarket.Utils
         public static Delegate GenerateDelegate(string expression,List<ParameterExpression> parameters)
         {
             var internalExpression = new List<ComplexExpression>();
+            expression = GenerateExpression(ExpressionEnumerables.operations.POWER, expression, internalExpression, parameters);
             expression = GenerateExpression(ExpressionEnumerables.operations.NEGATE, expression, internalExpression, parameters);
             expression = GenerateExpression(ExpressionEnumerables.operations.MULTIPLY, expression,internalExpression,parameters);
             expression = GenerateExpression(ExpressionEnumerables.operations.DIVIDE, expression, internalExpression, parameters);
@@ -78,7 +79,7 @@ namespace StockMarket.Utils
                 }
                 if (string.IsNullOrEmpty(name))
                 {
-                    var multiply = decimal.Parse(match[0].ToString());
+                    var multiply = double.Parse(match[0].ToString());
                     return Expression.Constant(multiply);
                 }
                 var value = expressions.FirstOrDefault(x => x.VariableName == name);
@@ -88,7 +89,7 @@ namespace StockMarket.Utils
                 }
                 else if (parameters.FirstOrDefault(x => x.Name == name) == null)
                 {
-                    var parameter = Expression.Variable(typeof(decimal), name);
+                    var parameter = Expression.Variable(typeof(double), name);
                     parameters.Add(parameter);
                     expression = parameter;
                 }
@@ -98,7 +99,7 @@ namespace StockMarket.Utils
                 }
                 if (match.Count > 0)
                 {
-                    var multiply = decimal.Parse(match[0].ToString());
+                    var multiply = double.Parse(match[0].ToString());
                     return Expression.Multiply(Expression.Constant(multiply), expression);
                 }
                 else
@@ -129,6 +130,9 @@ namespace StockMarket.Utils
                 case (ExpressionEnumerables.operations.DIVIDE):
                     expReg = "(\\w+[/]\\w+)";
                     splitChar = '/'; break;
+                case (ExpressionEnumerables.operations.POWER):
+                    expReg = "(\\w+[\\^]\\w+)";
+                    splitChar = '^'; break;
             }
             var regex = new Regex(expReg);
             var matches = regex.Matches(input);
@@ -169,6 +173,9 @@ namespace StockMarket.Utils
                     break;
                 case (ExpressionEnumerables.operations.NEGATE):
                     exp = Expression.Negate(right);
+                    break;
+                case (ExpressionEnumerables.operations.POWER):
+                    exp = Expression.Power(left, right);                            
                     break;
                 default:
                     break;

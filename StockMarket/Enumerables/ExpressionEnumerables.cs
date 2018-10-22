@@ -14,7 +14,8 @@ namespace StockMarket.Enumerables
             SUBTRACT,
             MULTIPLY,
             DIVIDE,
-            NEGATE
+            NEGATE,
+            POWER
         }
     }
 }

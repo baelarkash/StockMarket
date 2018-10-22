@@ -35,6 +35,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,6 +49,7 @@
     <Compile Include="Models\ComplexExpression.cs" />
     <Compile Include="Models\InternalFunction.cs" />
     <Compile Include="Models\Parameter.cs" />
+    <Compile Include="Models\DemandCurveResources.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Models\Demand.cs" />
     <Compile Include="Models\DemandCurve.cs" />
@@ -60,6 +63,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logic\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
