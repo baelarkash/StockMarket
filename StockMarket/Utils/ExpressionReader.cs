@@ -82,6 +82,7 @@ namespace StockMarket.Utils
                     var multiply = double.Parse(match[0].ToString());
                     return Expression.Constant(multiply);
                 }
+                name = name.Trim();
                 var value = expressions.FirstOrDefault(x => x.VariableName == name);
                 if (value != null)
                 {
@@ -116,22 +117,22 @@ namespace StockMarket.Utils
             switch (operation)
             {
                 case (ExpressionEnumerables.operations.MULTIPLY):
-                    expReg = "(\\w+[*]\\w+)"; 
+                    expReg = "(\\w+\\s[*]\\s\\w+)"; 
                     splitChar = '*';break;
                 case (ExpressionEnumerables.operations.SUM):
-                    expReg = "(\\w+[+]\\w+)"; 
+                    expReg = "(\\w+\\s[+]\\s\\w+)"; 
                     splitChar = '+';break;
                 case (ExpressionEnumerables.operations.SUBTRACT):
-                    expReg = "(\\w+[-]\\w+)";
+                    expReg = "(\\w+\\s[-]\\s\\w+)";
                     splitChar = '-'; break;
                 case (ExpressionEnumerables.operations.NEGATE):
                     expReg = "(?:[(+*/ -)])([-]\\w+)";
                     splitChar = '-';break;
                 case (ExpressionEnumerables.operations.DIVIDE):
-                    expReg = "(\\w+[/]\\w+)";
+                    expReg = "(\\w+\\s[/]\\s\\w+)";
                     splitChar = '/'; break;
                 case (ExpressionEnumerables.operations.POWER):
-                    expReg = "(\\w+[\\^]\\w+)";
+                    expReg = "(\\w+\\s[\\^]\\s\\w+)";
                     splitChar = '^'; break;
             }
             var regex = new Regex(expReg);

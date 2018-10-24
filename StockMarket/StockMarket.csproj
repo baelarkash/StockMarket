@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Enumerables\ExpressionEnumerables.cs" />
     <Compile Include="Models\ComplexExpression.cs" />
+    <Compile Include="Models\ComplexFunction.cs" />
     <Compile Include="Models\InternalFunction.cs" />
     <Compile Include="Models\Parameter.cs" />
     <Compile Include="Models\DemandCurveResources.cs" />

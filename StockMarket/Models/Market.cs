@@ -12,19 +12,91 @@ namespace StockMarket.Models
         public Stock CurrentStock { get; set; }
         private List<DemandCurveResources> demandCurves;
         private double currentMoney;
-        private DemandCurve GetDemandCurve(string resource,bool type) {
+        private DemandCurve GetDemandCurve(Resource resource) {
             DemandCurve curve;
-            if (type) {
-                curve = demandCurves.FirstOrDefault(x => x.resourceTypes.Any(y => y.Name == resource)).demandCurve;
-            }
-            else
-            {
-                curve = demandCurves.FirstOrDefault(x => x.resources.Any(y => y.Name == resource)).demandCurve;
+            curve = demandCurves.FirstOrDefault(x => x.resources.Any(y => y == resource)).demandCurve;
+            if (curve==null) {
+                curve = demandCurves.FirstOrDefault(x => x.resourceTypes.Any(y => y.Name == resource.Type.Name)).demandCurve;
             }
             return curve;
         }
+        public double sellResources(List<ResourceQuantity> resources)
+        {
+            double total = 0;
+            foreach (var resource in resources)
+            {
+                var curve = GetDemandCurve(resource.Resource);
+                if(curve == null)
+                {
+                    var item = CurrentStock.Products.FirstOrDefault(x => x.Resource == resource.Resource);
+                    var type = CurrentStock.Products.Where(x => x.Resource.Type == resource.Resource.Type);
+                    total += curve.EvalDemandCurve(item.Quantity, item.Quantity + resource.Quantity, type.Sum(x => x.Quantity));
+                    item.Quantity += resource.Quantity;
+                }
+            }
+            return total;
+        }
+        public double buyResources(List<ResourceQuantity> resources) 
+        {
+            double total = 0;
+            foreach (var resource in resources)
+            {
+                var curve = GetDemandCurve(resource.Resource);
+                if (curve == null)
+                {
+                    var item = CurrentStock.Products.FirstOrDefault(x => x.Resource == resource.Resource);
+                    var type = CurrentStock.Products.Where(x => x.Resource.Type == resource.Resource.Type);
+                    total += curve.EvalDemandCurve(item.Quantity, item.Quantity + resource.Quantity, type.Sum(x => x.Quantity));
+                    item.Quantity -= resource.Quantity;
+                }
+            }
+            return total;
+        }
+        public double exchangeResources(List<ResourceQuantity> buyList, List<ResourceQuantity> sellList)
+        {
+            double total = 0;
+            total -= sellResources(sellList);
+            total += buyResources(buyList);
+            return total;
+        }
+        public bool addResources(List<ResourceQuantity> resources)
+        {
+            bool result = true;
+            foreach (var resource in resources)
+            {
+                var item = CurrentStock.Products.FirstOrDefault(x => x.Resource == resource.Resource);
+                if (item != null)
+                {
+                    item.Quantity += resource.Quantity;
 
-
+                }
+                else
+                {
+                    CurrentStock.Products.Add(resource);
+                }
+            }
+            return result;
+        }
+        public bool removeResources(List<ResourceQuantity> resources) {
+            bool result = true;
+            foreach(var resource in resources)
+            {
+                var item = CurrentStock.Products.FirstOrDefault(x => x.Resource == resource.Resource);
+                if(item!= null)
+                {
+                    if(item.Quantity - resource.Quantity < 0)
+                    {
+                        return false;
+                    }
+                    item.Quantity -= resource.Quantity;                    
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return result;
+        }
 
     }
 }

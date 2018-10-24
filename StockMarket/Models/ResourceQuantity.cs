@@ -9,7 +9,7 @@ namespace StockMarket.Models
     public class ResourceQuantity
     {
         public Resource Resource { get; set; }
-        public decimal Quantity { get; set; }
+        public double Quantity { get; set; }
 
     }
 }

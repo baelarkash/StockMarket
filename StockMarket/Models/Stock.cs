@@ -8,6 +8,6 @@ namespace StockMarket.Models
 {
     public class Stock
     {
-        List<ResourceQuantity> Product { get; set; }
+        public List<ResourceQuantity> Products { get; set; }
     }
 }
