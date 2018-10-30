@@ -16,7 +16,6 @@ namespace StockMarket.Models
 		public ComplexFunction SellFunction { get; set; }
 		public DemandCurve(string name, string buyExpression,string buyIntegral, string sellExpression, string sellIntegral)
         {
-
             Name = name;
 			BuyFunction = new ComplexFunction(buyExpression, buyIntegral);
 			SellFunction = new ComplexFunction(sellExpression , sellIntegral);

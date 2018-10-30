@@ -12,19 +12,19 @@ namespace StockMarket.Models
         public List<InternalFunction> Function { get; set; }
         public string IntegralLiteral { get; set; }
         public List<InternalFunction> IntegralFunction { get; set; }
-        public List<string> Parameters { get; set; }
-        public List<string> IntegralParameters { get; set; }
+        //public List<string> Parameters { get; set; }
+        //public List<string> IntegralParameters { get; set; }
         public ComplexFunction(string expression, string integral)
         {
             ExpressionLiteral = expression;
             IntegralLiteral = integral;
             if (!string.IsNullOrEmpty(expression))
             {
-                Function = Utils.ExpressionReader.CreateExpression(expression, Parameters);
+                Function = Utils.ExpressionReader.CreateExpression(expression);
             }
             if (!string.IsNullOrEmpty(integral))
             {
-				IntegralFunction = Utils.ExpressionReader.CreateExpression(integral, IntegralParameters);
+				IntegralFunction = Utils.ExpressionReader.CreateExpression(integral);
             }
         }
         public double EvalFunction(List<Parameter> parameters)

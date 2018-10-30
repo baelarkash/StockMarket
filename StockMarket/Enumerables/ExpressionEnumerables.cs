@@ -23,5 +23,12 @@ namespace StockMarket.Enumerables
 			typeQuantity,
 			currentMoney
 		}
+		public enum specialOperations
+		{
+			log,
+			min,
+			max
+
+		}
     }
 }

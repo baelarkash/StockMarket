@@ -11,11 +11,13 @@ namespace StockMarket.Utils
 {
     public static class ExpressionReader
     {
-        public static List<InternalFunction> CreateExpression(string expression,List<string> parameters) {
+        public static List<InternalFunction> CreateExpression(string expression) {
             List<string> variables = new List<string>();
             List<InternalFunction> delegates = new List<InternalFunction>();
-            while (GetExpression(ref expression, variables,delegates)) { }
-            parameters = delegates.SelectMany(x => x.parameters.Where(y => !y.Contains("internal_var_"))).Distinct().ToList();
+			//Multiplicaciones Implicitas
+			expression = Regex.Replace(expression, @"\)\s*\(", ")*(");
+			GetExpression(ref expression, variables, delegates);
+            //parameters = delegates.SelectMany(x => x.parameters.Where(y => !y.Contains("internal_var_"))).Distinct().ToList();
             return delegates;
         }
 
@@ -30,17 +32,14 @@ namespace StockMarket.Utils
             expression = GenerateExpression(ExpressionEnumerables.operations.SUBTRACT, expression, internalExpression, parameters);
 			if (internalExpression.Count() == 0)
 			{
-				//internalExpression.Add();
 				internalExpression.Add(new ComplexExpression() { Expression = CheckParameter(expression, parameters, internalExpression), VariableName = expression});
 			}
             var lambda =  Expression.Lambda(internalExpression.Last().Expression, parameters.ToArray());
             return lambda.Compile();            
         }
-
-        private static bool GetExpression(ref string expression,List<string> variables,List<InternalFunction> delegates)
+        private static void GetExpression(ref string expression,List<string> variables,List<InternalFunction> delegates)
         {
-            var regex = new Regex("(\\([\\w+*/-]+\\))");
-            //var regex = new Regex("((?:\\()[\\w+*/-]+(?:\\)))");
+            var regex = new Regex("(\\([\\w+*/-^]+\\))");
             var matches = regex.Matches(expression);
             if (matches.Count > 0)
             {
@@ -49,7 +48,6 @@ namespace StockMarket.Utils
                 {
                     var expressionLiteral = match.ToString();
                     string variable = "internal_var_" + variables.Count().ToString();
-                    //expression = expression.Replace(match.ToString(), variable);
                     expression= expression.Substring(0, accumulativeLenghtChange + match.Index) + variable + expression.Substring(accumulativeLenghtChange + match.Index + match.Length);
                     accumulativeLenghtChange += variable.Length - match.Length;
                     var parameters = new List<ParameterExpression>();
@@ -57,6 +55,7 @@ namespace StockMarket.Utils
                     delegates.Add(new InternalFunction { expressionLiteral= expressionLiteral, function = function, variableName = variable, parameters = parameters.Select(x => x.Name).ToList() });
                     variables.Add(variable);
                 }
+				GetExpression(ref expression, variables, delegates);
             }
             else
             {
@@ -66,8 +65,6 @@ namespace StockMarket.Utils
                 delegates.Add(new InternalFunction { function = function, variableName = variable, parameters = parameters.Select(x => x.Name).ToList() });
                 variables.Add(variable);
             }
-            
-            return matches.Count > 0;
         }
         private static Expression CheckParameter(string name, List<ParameterExpression> parameters,List<ComplexExpression> expressions)
         {
@@ -146,9 +143,6 @@ namespace StockMarket.Utils
                 foreach (var match in matches)
                 {
                     var item = ((Match)match).Groups[1].Value;
-                    //((System.Text.RegularExpressions.Group)match).Captures[0].Value
-                    //((System.Text.RegularExpressions.Group)(new System.Linq.SystemCore_EnumerableDebugView(((System.Text.RegularExpressions.Match)match).Groups).Items[1])).Name
-
                     var values = item.Split(splitChar);
                     var expression = GenerateOperation(operation, CheckParameter(values[0], parameters, expressionList), CheckParameter(values[1], parameters, expressionList));
                     string varName = "internal_val_" + expressionList.Count().ToString();
