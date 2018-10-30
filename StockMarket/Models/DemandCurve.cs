@@ -12,21 +12,31 @@ namespace StockMarket.Models
     public class DemandCurve
     {
         public string Name { get; set; }
-        public ComplexFunction Function { get; set; }
-        public DemandCurve(string name, string expression,string integral)
+        public ComplexFunction BuyFunction { get; set; }
+		public ComplexFunction SellFunction { get; set; }
+		public DemandCurve(string name, string buyExpression,string buyIntegral, string sellExpression, string sellIntegral)
         {
 
             Name = name;
-            Function = new ComplexFunction(expression, integral);
-        }
-        public double EvalDemandCurve(List<Parameter> parameters)
+			BuyFunction = new ComplexFunction(buyExpression, buyIntegral);
+			SellFunction = new ComplexFunction(sellExpression , sellIntegral);
+		}
+        public double EvalBuyDemandCurve(List<Parameter> parameters)
         {
-            return Function.EvalFunction(parameters);
+            return BuyFunction.EvalFunction(parameters);
         }
-        public double EvalDemandCurve(double currentResourceQuantity,double endResourceQuantity,double currentTypeQuantity)
-        {
-            ///TODO
-            return 1;
+        public double EvalBuyDemandCurve(List<Parameter> parameters, double units)
+        {            
+            return BuyFunction.EvalFunctionRange(parameters,units);
         }
-    }
+		public double EvalSellDemandCurve(List<Parameter> parameters)
+		{
+			return SellFunction.EvalFunction(parameters);
+		}
+		public double EvalSellDemandCurve(List<Parameter> parameters, double units)
+		{
+			return SellFunction.EvalFunctionRange(parameters, units);
+		}
+	}
 }
+

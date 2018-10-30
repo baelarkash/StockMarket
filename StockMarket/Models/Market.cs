@@ -30,7 +30,9 @@ namespace StockMarket.Models
                 {
                     var item = CurrentStock.Products.FirstOrDefault(x => x.Resource == resource.Resource);
                     var type = CurrentStock.Products.Where(x => x.Resource.Type == resource.Resource.Type);
-                    total += curve.EvalDemandCurve(item.Quantity, item.Quantity + resource.Quantity, type.Sum(x => x.Quantity));
+					List<Parameter> parameters = new List<Parameter>();
+					parameters.Add(new Parameter() { name = "q", parameter = item.Quantity });
+					total += curve.EvalSellDemandCurve(parameters,resource.Quantity);
                     item.Quantity += resource.Quantity;
                 }
             }
@@ -46,7 +48,9 @@ namespace StockMarket.Models
                 {
                     var item = CurrentStock.Products.FirstOrDefault(x => x.Resource == resource.Resource);
                     var type = CurrentStock.Products.Where(x => x.Resource.Type == resource.Resource.Type);
-                    total += curve.EvalDemandCurve(item.Quantity, item.Quantity + resource.Quantity, type.Sum(x => x.Quantity));
+					List<Parameter> parameters = new List<Parameter>();
+					parameters.Add(new Parameter() { name = "q", parameter = item.Quantity });
+                    total += curve.EvalBuyDemandCurve(parameters, -resource.Quantity);
                     item.Quantity -= resource.Quantity;
                 }
             }
@@ -55,7 +59,7 @@ namespace StockMarket.Models
         public double exchangeResources(List<ResourceQuantity> buyList, List<ResourceQuantity> sellList)
         {
             double total = 0;
-            total -= sellResources(sellList);
+            total += sellResources(sellList);
             total += buyResources(buyList);
             return total;
         }

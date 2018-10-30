@@ -28,7 +28,11 @@ namespace StockMarket.Utils
             expression = GenerateExpression(ExpressionEnumerables.operations.DIVIDE, expression, internalExpression, parameters);
             expression = GenerateExpression(ExpressionEnumerables.operations.SUM, expression, internalExpression, parameters);
             expression = GenerateExpression(ExpressionEnumerables.operations.SUBTRACT, expression, internalExpression, parameters);
-            
+			if (internalExpression.Count() == 0)
+			{
+				//internalExpression.Add();
+				internalExpression.Add(new ComplexExpression() { Expression = CheckParameter(expression, parameters, internalExpression), VariableName = expression});
+			}
             var lambda =  Expression.Lambda(internalExpression.Last().Expression, parameters.ToArray());
             return lambda.Compile();            
         }
@@ -117,22 +121,22 @@ namespace StockMarket.Utils
             switch (operation)
             {
                 case (ExpressionEnumerables.operations.MULTIPLY):
-                    expReg = "(\\w+\\s[*]\\s\\w+)"; 
+                    expReg = "(\\w+\\s*[*]\\s*\\w+)"; 
                     splitChar = '*';break;
                 case (ExpressionEnumerables.operations.SUM):
-                    expReg = "(\\w+\\s[+]\\s\\w+)"; 
+                    expReg = "(\\w+\\s*[+]\\s*\\w+)"; 
                     splitChar = '+';break;
                 case (ExpressionEnumerables.operations.SUBTRACT):
-                    expReg = "(\\w+\\s[-]\\s\\w+)";
+                    expReg = "(\\w+\\s*[-]\\s*\\w+)";
                     splitChar = '-'; break;
                 case (ExpressionEnumerables.operations.NEGATE):
                     expReg = "(?:[(+*/ -)])([-]\\w+)";
                     splitChar = '-';break;
                 case (ExpressionEnumerables.operations.DIVIDE):
-                    expReg = "(\\w+\\s[/]\\s\\w+)";
+                    expReg = "(\\w+\\s*[/]\\s*\\w+)";
                     splitChar = '/'; break;
                 case (ExpressionEnumerables.operations.POWER):
-                    expReg = "(\\w+\\s[\\^]\\s\\w+)";
+                    expReg = "(\\w+\\s*[\\^]\\s*\\w+)";
                     splitChar = '^'; break;
             }
             var regex = new Regex(expReg);

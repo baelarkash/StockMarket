@@ -17,5 +17,11 @@ namespace StockMarket.Enumerables
             NEGATE,
             POWER
         }
+		public enum variables
+		{			
+			resourceQuantity,
+			typeQuantity,
+			currentMoney
+		}
     }
 }

@@ -24,64 +24,102 @@ namespace StockMarket.Models
             }
             if (!string.IsNullOrEmpty(integral))
             {
-                Function = Utils.ExpressionReader.CreateExpression(integral, IntegralParameters);
+				IntegralFunction = Utils.ExpressionReader.CreateExpression(integral, IntegralParameters);
             }
         }
         public double EvalFunction(List<Parameter> parameters)
         {
 
             List<Parameter> intermediateValues = new List<Parameter>();
+			if (checkParameters(parameters, Function))
+			{
+				foreach (var lambda in Function)
+				{
+					List<object> items = new List<object>();
 
-            foreach (var lambda in Function)
-            {
-                List<object> items = new List<object>();
+					foreach (var param in lambda.parameters)
+					{
+						if (param.Contains("internal_var"))
+						{
+							items.Add(intermediateValues.First(x => x.name == param).parameter);
+						}
+						else
+						{
+							items.Add(parameters.First(x => x.name == param).parameter);
+						}
+					}
 
-                foreach (var param in lambda.parameters)
-                {
-                    if (param.Contains("internal_var"))
-                    {
-                        items.Add(intermediateValues.First(x => x.name == param).parameter);
-                    }
-                    else
-                    {
-                        items.Add(parameters.First(x => x.name == param).parameter);
-                    }
-                }
-
-                var result = lambda.function.DynamicInvoke(items.ToArray());
-                intermediateValues.Add(new Parameter() { name = lambda.variableName, parameter = result });
-            }
-
-
-            return (double)intermediateValues.Last().parameter;
+					var result = lambda.function.DynamicInvoke(items.ToArray());
+					intermediateValues.Add(new Parameter() { name = lambda.variableName, parameter = result });
+				}
+				return (double)intermediateValues.Last().parameter;
+			}
+			return -1;
         }
-        public double EvalFunctionRange(List<Parameter> parameters)
+        public double EvalFunctionRange(List<Parameter> parameters,double units)
         {
             ///TODO
-            List<Parameter> intermediateValues = new List<Parameter>();
+            
+			if (checkParameters(parameters, IntegralFunction))
+			{
+				List<Parameter> intermediateValues = new List<Parameter>();
+				foreach (var lambda in IntegralFunction)
+				{
+					List<object> items = new List<object>();
 
-            foreach (var lambda in Function)
-            {
-                List<object> items = new List<object>();
+					foreach (var param in lambda.parameters)
+					{
+						if (param.Contains("internal_var"))
+						{
+							items.Add(intermediateValues.First(x => x.name == param).parameter);
+						}
+						else
+						{
+							items.Add(parameters.First(x => x.name == param).parameter);
+						}
+					}
 
-                foreach (var param in lambda.parameters)
-                {
-                    if (param.Contains("internal_var"))
-                    {
-                        items.Add(intermediateValues.First(x => x.name == param).parameter);
-                    }
-                    else
-                    {
-                        items.Add(parameters.First(x => x.name == param).parameter);
-                    }
-                }
+					var result = lambda.function.DynamicInvoke(items.ToArray());
+					intermediateValues.Add(new Parameter() { name = lambda.variableName, parameter = result });
+				}
+				var parameter =(double) parameters.First(x => x.name == Utils.ExpressionVariables.getVariable(Enumerables.ExpressionEnumerables.variables.resourceQuantity)).parameter;
+				parameter += units;
+				parameters.First(x => x.name == Utils.ExpressionVariables.getVariable(Enumerables.ExpressionEnumerables.variables.resourceQuantity)).parameter = (object)parameter;
+				List<Parameter> intermediateValues2 = new List<Parameter>();
+				foreach (var lambda in IntegralFunction)
+				{
+					List<object> items = new List<object>();
 
-                var result = lambda.function.DynamicInvoke(items.ToArray());
-                intermediateValues.Add(new Parameter() { name = lambda.variableName, parameter = result });
-            }
+					foreach (var param in lambda.parameters)
+					{
+						if (param.Contains("internal_var"))
+						{
+							items.Add(intermediateValues2.First(x => x.name == param).parameter);
+						}
+						else
+						{
+							items.Add(parameters.First(x => x.name == param).parameter);
+						}
+					}
 
+					var result = lambda.function.DynamicInvoke(items.ToArray());
+					intermediateValues2.Add(new Parameter() { name = lambda.variableName, parameter = result });
+				}
 
-            return (double)intermediateValues.Last().parameter;
+				return (double)((double)intermediateValues2.Last().parameter - (double)intermediateValues.Last().parameter)/units;
+			}
+			return -1;
+
+            
         }
+		private bool checkParameters(List<Parameter> parameters, List<InternalFunction> functions)
+		{
+			List<string> variables = new List<string>();
+			variables.AddRange(functions.SelectMany(x => x.parameters.Where(y=>!y.Contains("internal_var"))).ToList());
+			variables = variables.Distinct().ToList();
+			List<string> items = parameters.Select(x => x.name).ToList();
+			return items.All(x => variables.Contains(x));
+
+		}
     }
 }
