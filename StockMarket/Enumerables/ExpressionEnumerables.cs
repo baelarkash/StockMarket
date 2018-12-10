@@ -28,7 +28,6 @@ namespace StockMarket.Enumerables
 			log,
 			min,
 			max
-
 		}
     }
 }

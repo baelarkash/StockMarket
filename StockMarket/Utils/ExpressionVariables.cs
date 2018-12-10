@@ -10,6 +10,7 @@ namespace StockMarket.Utils
 	public static class ExpressionVariables
 	{
 		private static Dictionary<ExpressionEnumerables.variables, string> variables;
+		private static Dictionary<ExpressionEnumerables.specialOperations, string> operations;
 		public static string getVariable(ExpressionEnumerables.variables key)
 		{
 			string output;
@@ -22,6 +23,12 @@ namespace StockMarket.Utils
 			variables[ExpressionEnumerables.variables.resourceQuantity] = "q";
 			variables[ExpressionEnumerables.variables.typeQuantity] = "Q";
 			variables[ExpressionEnumerables.variables.currentMoney] = "M";
+		
+		
+			operations = new Dictionary<ExpressionEnumerables.specialOperations, string>();
+			operations[ExpressionEnumerables.specialOperations.log] = "log";
+			operations[ExpressionEnumerables.specialOperations.max] = "max";
+			operations[ExpressionEnumerables.specialOperations.min] = "min";
 		}
 
 	}

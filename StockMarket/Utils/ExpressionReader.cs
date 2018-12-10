@@ -15,7 +15,7 @@ namespace StockMarket.Utils
             List<string> variables = new List<string>();
             List<InternalFunction> delegates = new List<InternalFunction>();
 			//Multiplicaciones Implicitas
-			expression = Regex.Replace(expression, @"\)\s*\(", ")*(");
+			expression = Regex.Replace(expression, @"(\)|\w)\s*\(", "$1*(");
 			GetExpression(ref expression, variables, delegates);
             //parameters = delegates.SelectMany(x => x.parameters.Where(y => !y.Contains("internal_var_"))).Distinct().ToList();
             return delegates;
@@ -174,7 +174,7 @@ namespace StockMarket.Utils
                     exp = Expression.Negate(right);
                     break;
                 case (ExpressionEnumerables.operations.POWER):
-                    exp = Expression.Power(left, right);                            
+                    exp = Expression.Power(left, right);   
                     break;
                 default:
                     break;

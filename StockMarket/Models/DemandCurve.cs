@@ -14,10 +14,12 @@ namespace StockMarket.Models
         public string Name { get; set; }
         public ComplexFunction BuyFunction { get; set; }
 		public ComplexFunction SellFunction { get; set; }
+		public List<string> parameters { get; set; }
 		public DemandCurve(string name, string buyExpression,string buyIntegral, string sellExpression, string sellIntegral)
         {
             Name = name;
 			BuyFunction = new ComplexFunction(buyExpression, buyIntegral);
+			parameters = BuyFunction.Function.SelectMany(x => x.parameters.Where(y=>!y.Contains("internal_var"))).Distinct().ToList();
 			SellFunction = new ComplexFunction(sellExpression , sellIntegral);
 		}
         public double EvalBuyDemandCurve(List<Parameter> parameters)

@@ -26,7 +26,7 @@ namespace StockMarket.Models
             foreach (var resource in resources)
             {
                 var curve = GetDemandCurve(resource.Resource);
-                if(curve == null)
+                if(curve != null)
                 {
                     var item = CurrentStock.Products.FirstOrDefault(x => x.Resource == resource.Resource);
                     var type = CurrentStock.Products.Where(x => x.Resource.Type == resource.Resource.Type);
@@ -44,7 +44,7 @@ namespace StockMarket.Models
             foreach (var resource in resources)
             {
                 var curve = GetDemandCurve(resource.Resource);
-                if (curve == null)
+                if (curve != null)
                 {
                     var item = CurrentStock.Products.FirstOrDefault(x => x.Resource == resource.Resource);
                     var type = CurrentStock.Products.Where(x => x.Resource.Type == resource.Resource.Type);
@@ -63,44 +63,15 @@ namespace StockMarket.Models
             total += buyResources(buyList);
             return total;
         }
-        public bool addResources(List<ResourceQuantity> resources)
-        {
-            bool result = true;
-            foreach (var resource in resources)
-            {
-                var item = CurrentStock.Products.FirstOrDefault(x => x.Resource == resource.Resource);
-                if (item != null)
-                {
-                    item.Quantity += resource.Quantity;
-
-                }
-                else
-                {
-                    CurrentStock.Products.Add(resource);
-                }
-            }
-            return result;
-        }
-        public bool removeResources(List<ResourceQuantity> resources) {
-            bool result = true;
-            foreach(var resource in resources)
-            {
-                var item = CurrentStock.Products.FirstOrDefault(x => x.Resource == resource.Resource);
-                if(item!= null)
-                {
-                    if(item.Quantity - resource.Quantity < 0)
-                    {
-                        return false;
-                    }
-                    item.Quantity -= resource.Quantity;                    
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return result;
-        }
+        public ConcurrentExchangeResponse exchangeResponse(ConcurrentExchangePetition petition)
+		{
+			var result = new ConcurrentExchangeResponse();
+			foreach(var ownerPetition in petition.Petitions)
+			{
+				
+			}
+			return result;
+		}
 
     }
 }

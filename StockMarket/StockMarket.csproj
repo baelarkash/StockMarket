@@ -48,8 +48,13 @@
     <Compile Include="Enumerables\ExpressionEnumerables.cs" />
     <Compile Include="Models\ComplexExpression.cs" />
     <Compile Include="Models\ComplexFunction.cs" />
+    <Compile Include="Models\ConcurrentExchangePetition.cs" />
+    <Compile Include="Models\ConcurrentExchangeResponse.cs" />
     <Compile Include="Models\DemandCurveParameters.cs" />
     <Compile Include="Models\InternalFunction.cs" />
+    <Compile Include="Models\Owner.cs" />
+    <Compile Include="Models\OwnerPetition.cs" />
+    <Compile Include="Models\OwnerResponse.cs" />
     <Compile Include="Models\Parameter.cs" />
     <Compile Include="Models\DemandCurveResources.cs" />
     <Compile Include="Program.cs" />
