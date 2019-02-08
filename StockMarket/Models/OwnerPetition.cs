@@ -9,6 +9,7 @@ namespace StockMarket.Models
 	public class OwnerPetition
 	{
 		public Owner Owner { get; set; }
-		public List<ResourceQuantity> Resources { get; set; }
+		public List<ResourceQuantityMarket> Resources { get; set; }
+
 	}
 }

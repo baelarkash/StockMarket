@@ -10,6 +10,10 @@ namespace StockMarket.Models
     {
         public Resource Resource { get; set; }
         public double Quantity { get; set; }
-
     }
+	public class ResourceQuantityMarket:ResourceQuantity
+	{
+		public  Enumerables.ExpressionEnumerables.petitionType petitionType { get; set; }
+		
+	}
 }

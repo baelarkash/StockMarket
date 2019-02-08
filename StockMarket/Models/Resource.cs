@@ -12,7 +12,9 @@ namespace StockMarket.Models
         public ResourceType Type { get; set; }
         public override bool Equals(object obj)
         {
-            return this.Name == ((Resource)obj).Name;
-        }
+			//Resource aux = (Resource)obj;
+			//return this.Name == aux.Name && this.Type == aux.Type;
+			return this.Name == ((ResourceType)obj).Name;
+		}
     }
 }

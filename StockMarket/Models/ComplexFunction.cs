@@ -27,13 +27,17 @@ namespace StockMarket.Models
 				IntegralFunction = Utils.ExpressionReader.CreateExpression(integral);
             }
         }
-        public double EvalFunction(List<Parameter> parameters)
-        {
+		public double EvalFunction(List<Parameter> parameters)
+		{
+			return EvalSimpleFunction(parameters, Function);
+		}
 
+		private double EvalSimpleFunction(List<Parameter> parameters,List<InternalFunction> functionToEvaluate)
+        {
             List<Parameter> intermediateValues = new List<Parameter>();
-			if (checkParameters(parameters, Function))
+			if (checkParameters(parameters, functionToEvaluate))
 			{
-				foreach (var lambda in Function)
+				foreach (var lambda in functionToEvaluate)
 				{
 					List<object> items = new List<object>();
 
@@ -58,59 +62,19 @@ namespace StockMarket.Models
         }
         public double EvalFunctionRange(List<Parameter> parameters,double units)
         {
-            ///TODO
-            
-			if (checkParameters(parameters, IntegralFunction))
-			{
-				List<Parameter> intermediateValues = new List<Parameter>();
-				foreach (var lambda in IntegralFunction)
-				{
-					List<object> items = new List<object>();
-
-					foreach (var param in lambda.parameters)
-					{
-						if (param.Contains("internal_var"))
-						{
-							items.Add(intermediateValues.First(x => x.name == param).parameter);
-						}
-						else
-						{
-							items.Add(parameters.First(x => x.name == param).parameter);
-						}
-					}
-
-					var result = lambda.function.DynamicInvoke(items.ToArray());
-					intermediateValues.Add(new Parameter() { name = lambda.variableName, parameter = result });
-				}
-				var parameter =(double) parameters.First(x => x.name == Utils.ExpressionVariables.getVariable(Enumerables.ExpressionEnumerables.variables.resourceQuantity)).parameter;
-				parameter += units;
-				parameters.First(x => x.name == Utils.ExpressionVariables.getVariable(Enumerables.ExpressionEnumerables.variables.resourceQuantity)).parameter = (object)parameter;
-				List<Parameter> intermediateValues2 = new List<Parameter>();
-				foreach (var lambda in IntegralFunction)
-				{
-					List<object> items = new List<object>();
-
-					foreach (var param in lambda.parameters)
-					{
-						if (param.Contains("internal_var"))
-						{
-							items.Add(intermediateValues2.First(x => x.name == param).parameter);
-						}
-						else
-						{
-							items.Add(parameters.First(x => x.name == param).parameter);
-						}
-					}
-
-					var result = lambda.function.DynamicInvoke(items.ToArray());
-					intermediateValues2.Add(new Parameter() { name = lambda.variableName, parameter = result });
-				}
-
-				return (double)((double)intermediateValues2.Last().parameter - (double)intermediateValues.Last().parameter)/units;
-			}
-			return -1;
-
-            
+			var aux = new List<Parameter>();
+			var firstValue = EvalSimpleFunction(parameters, IntegralFunction);
+			
+			aux.AddRange(parameters);
+			//var parameter = (double)aux.First(x => x.name == Utils.ExpressionVariables.getVariable(Enumerables.ExpressionEnumerables.variables.resourceQuantity)).parameter;
+			//parameter += units;
+			aux.RemoveAll(x => x.name == Utils.ExpressionVariables.getVariable(Enumerables.ExpressionEnumerables.variables.resourceQuantity));
+			var parameter = new Parameter();
+			parameter.name = Utils.ExpressionVariables.getVariable(Enumerables.ExpressionEnumerables.variables.resourceQuantity);
+			parameter.parameter = (double)parameters.First(x => x.name == parameter.name).parameter + units;
+			aux.Add(parameter);
+			var secondValue = EvalSimpleFunction(aux, IntegralFunction);
+			return (double)(secondValue - firstValue)/units;           
         }
 		private bool checkParameters(List<Parameter> parameters, List<InternalFunction> functions)
 		{
@@ -118,7 +82,7 @@ namespace StockMarket.Models
 			variables.AddRange(functions.SelectMany(x => x.parameters.Where(y=>!y.Contains("internal_var"))).ToList());
 			variables = variables.Distinct().ToList();
 			List<string> items = parameters.Select(x => x.name).ToList();
-			return items.All(x => variables.Contains(x));
+			return variables.All(x => items.Contains(x));
 
 		}
     }

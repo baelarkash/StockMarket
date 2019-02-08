@@ -9,5 +9,9 @@ namespace StockMarket.Models
     public class ResourceType
     {
         public string Name { get; set; }
-    }
+		public override bool Equals(object obj)
+		{
+			return this.Name == ((ResourceType)obj).Name;
+		}
+	}
 }

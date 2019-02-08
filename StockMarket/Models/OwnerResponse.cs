@@ -10,5 +10,6 @@ namespace StockMarket.Models
 	{
 		public Owner Owner { get; set; }
 		public int Value { get; set; }
+		public List<ResourceQuantity> Resources { get; set; }
 	}
 }

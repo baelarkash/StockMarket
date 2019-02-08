@@ -60,16 +60,21 @@ namespace StockMarket.Models
         {
             double total = 0;
             total += sellResources(sellList);
-            total += buyResources(buyList);
+            total -= buyResources(buyList);
             return total;
         }
         public ConcurrentExchangeResponse exchangeResponse(ConcurrentExchangePetition petition)
 		{
 			var result = new ConcurrentExchangeResponse();
-			foreach(var ownerPetition in petition.Petitions)
+			List<ResourceQuantity> requestedResources = new List<ResourceQuantity>();			
+			petition.Petitions.ForEach(x => requestedResources.AddRange(x.Resources));
+			foreach (var item in requestedResources.GroupBy(x=>x.Resource))
 			{
-				
+				var curve = GetDemandCurve(item.Key);
+				var resources = CurrentStock.Products.FirstOrDefault(x => x.Resource == item.Key);
+				var type = CurrentStock.Products.Where(x => x.Resource.Type == item.Key.Type);
 			}
+			
 			return result;
 		}
 

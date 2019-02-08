@@ -18,7 +18,7 @@ namespace StockMarket.Enumerables
             POWER
         }
 		public enum variables
-		{			
+		{
 			resourceQuantity,
 			typeQuantity,
 			currentMoney
@@ -29,5 +29,10 @@ namespace StockMarket.Enumerables
 			min,
 			max
 		}
-    }
+		public enum petitionType
+		{
+			BUY,
+			SELL
+		}
+	}
 }
