@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
 
-namespace StockMarket.Models
+namespace StockMarket.Models.Market
 {
     public class DemandCurve
     {

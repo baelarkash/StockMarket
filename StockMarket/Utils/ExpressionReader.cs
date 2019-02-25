@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using StockMarket.Models;
+using StockMarket.Models.Market;
 using StockMarket.Enumerables;
 namespace StockMarket.Utils
 {

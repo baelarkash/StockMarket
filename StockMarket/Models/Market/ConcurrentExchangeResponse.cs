@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StockMarket.Models
+namespace StockMarket.Models.Market
 {
-	public class Owner
+	public class ConcurrentExchangeResponse
 	{
-		public string name { get; set; }
+		public List<OwnerResponse> Responses { get; set; }
 	}
 }

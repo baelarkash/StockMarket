@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StockMarket.Models.Common;
 
-namespace StockMarket.Models
+namespace StockMarket.Models.Market
 {
     public class Stock
     {
