@@ -9,7 +9,10 @@ namespace StockMarket.Models
     public class Stock
     {
         public List<ResourceQuantity> Products { get; set; }
-
+		public Stock()
+		{
+			Products = new List<ResourceQuantity>();
+		}
 
 		public bool addResources(List<ResourceQuantity> resources)
 		{

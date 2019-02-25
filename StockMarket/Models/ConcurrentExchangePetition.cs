@@ -9,5 +9,9 @@ namespace StockMarket.Models
 	public class ConcurrentExchangePetition
 	{
 		public List<OwnerPetition> Petitions { get; set; }
+		public ConcurrentExchangePetition()
+		{
+			Petitions = new List<OwnerPetition>();
+		}
 	}
 }

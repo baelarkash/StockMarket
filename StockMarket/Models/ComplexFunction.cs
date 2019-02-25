@@ -74,7 +74,7 @@ namespace StockMarket.Models
 			parameter.parameter = (double)parameters.First(x => x.name == parameter.name).parameter + units;
 			aux.Add(parameter);
 			var secondValue = EvalSimpleFunction(aux, IntegralFunction);
-			return (double)(secondValue - firstValue)/units;           
+			return (double)(secondValue - firstValue)/Math.Abs(units);           
         }
 		private bool checkParameters(List<Parameter> parameters, List<InternalFunction> functions)
 		{

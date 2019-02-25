@@ -14,7 +14,7 @@ namespace StockMarket.Models
         {
 			//Resource aux = (Resource)obj;
 			//return this.Name == aux.Name && this.Type == aux.Type;
-			return this.Name == ((ResourceType)obj).Name;
+			return this.Name == ((Resource)obj).Name;
 		}
     }
 }

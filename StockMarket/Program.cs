@@ -13,24 +13,7 @@ namespace StockMarket
     {
         static void Main(string[] args)
         {
-			List<Parameter> variables = new List<Parameter>();
-			variables.Add(new Parameter() { name = "q", parameter = (object)4d });
-			variables.Add(new Parameter() { name = "Q", parameter = (object)10d });
-
-
-			//var demandCurve = new DemandCurve(string.Empty, "((a+b)-(a+b)*(a+b))/-2b");			
-			var demandCurve = new DemandCurve(string.Empty, "2q^2-q+2","2q^2/3+2q-q^2/2","q","q^2/2");
-			//var demandCurve = new DemandCurve(string.Empty, "((q+2)(q^2))^2", "q^2/2+2q", "q", "q^2/2");
-			//var demandCurve = new DemandCurve(string.Empty, "Q(q+1)", "q^2/2+2q", "q", "q^2/2");
-			double result1 = 0;
-			double result12 = 0;
-			//variables.Add(new Parameter() { name = "c", parameter = (object)3m });
-			//var result = demandCurve.EvalBuyDemandCurve(variables,3);
-			result1 = demandCurve.EvalBuyDemandCurve(variables);
-			result12 = demandCurve.EvalBuyDemandCurve(variables, 2);
-			
-			string a = string.Empty;
-			string b = string.Empty;
+			pruebaMarket();
 			///TODO Crear funcion para la integral de la funcion original dentro de demandCurve
 			///TODO Expresiones del modulo Math (log,max,min...)  
 
@@ -88,6 +71,70 @@ namespace StockMarket
 			string a = string.Empty;
 			string b = string.Empty;
 		}
+		public static void prueba()
+		{
+			List<Parameter> variables = new List<Parameter>();
+			variables.Add(new Parameter() { name = "q", parameter = (object)4d });
+			variables.Add(new Parameter() { name = "Q", parameter = (object)10d });
 
+
+			//var demandCurve = new DemandCurve(string.Empty, "((a+b)-(a+b)*(a+b))/-2b");			
+			var demandCurve = new DemandCurve(string.Empty, "2q^2-q+2", "2q^2/3+2q-q^2/2", "q", "q^2/2");
+			//var demandCurve = new DemandCurve(string.Empty, "((q+2)(q^2))^2", "q^2/2+2q", "q", "q^2/2");
+			//var demandCurve = new DemandCurve(string.Empty, "Q(q+1)", "q^2/2+2q", "q", "q^2/2");
+			double result1 = 0;
+			double result12 = 0;
+			//variables.Add(new Parameter() { name = "c", parameter = (object)3m });
+			//var result = demandCurve.EvalBuyDemandCurve(variables,3);
+			result1 = demandCurve.EvalBuyDemandCurve(variables);
+			result12 = demandCurve.EvalBuyDemandCurve(variables, 2);
+
+			string a = string.Empty;
+			string b = string.Empty;
+		}
+		public static void pruebaMarket()
+		{
+			Market m = new Market();
+			m.CurrentStock = new Stock();
+			var resourceTypes = new List<ResourceType>();
+			var resources = generateBasicResources(resourceTypes);
+			var resourceQ = new List<ResourceQuantity>();
+			foreach(var resource in resources)
+			{
+				resourceQ.Add(new ResourceQuantity() { Quantity = 1, Resource = resource });
+			}
+			m.CurrentStock.addResources(resourceQ);
+			ConcurrentExchangePetition petition = new ConcurrentExchangePetition();
+			Owner owner1 = new Owner() { name = "owner1" };
+			Owner owner2 = new Owner() { name = "owner2" };
+			var resourcesOwner1 = new List<ResourceQuantityMarket>();
+			resourcesOwner1.Add(new ResourceQuantityMarket() { Quantity = 3, Resource = resources[1],petitionType = Enumerables.ExpressionEnumerables.petitionType.BUY });
+			resourcesOwner1.Add(new ResourceQuantityMarket() { Quantity = 3, Resource = resources[0], petitionType = Enumerables.ExpressionEnumerables.petitionType.SELL });
+			petition.Petitions.Add(new OwnerPetition() { Owner = owner1, Resources = resourcesOwner1 });
+			var resourcesOwner2 = new List<ResourceQuantityMarket>();
+			resourcesOwner2.Add(new ResourceQuantityMarket() { Quantity = 2, Resource = resources[2], petitionType = Enumerables.ExpressionEnumerables.petitionType.BUY });
+			resourcesOwner2.Add(new ResourceQuantityMarket() { Quantity = 5, Resource = resources[1], petitionType = Enumerables.ExpressionEnumerables.petitionType.SELL });
+			petition.Petitions.Add(new OwnerPetition() { Owner = owner2, Resources = resourcesOwner2 });
+			List<DemandCurveResources> curves = new List<DemandCurveResources>();
+			var curve = new DemandCurveResources();
+			curve.resources = resources;
+			curve.demandCurve = new DemandCurve("normal","q+Q","q^2/2 +Q*q","q+Q-1", "q^2/2 +Q*q-q");
+			curves.Add(curve);
+			m.addDemandCurve(curves);
+			var result = m.concurrentExchangeResponse(petition);
+			string a = "";
+		}
+		public static List<Resource> generateBasicResources(List<ResourceType> resourceTypes)
+		{
+			var resources = new List<Resource>();
+			ResourceType type = new ResourceType() { Name = "Madera" };
+			ResourceType type2 = new ResourceType() { Name = "Comida" };
+			ResourceType type3 = new ResourceType() { Name = "Piedra" };
+			resources.Add(new Resource() { Name = "Madera", Type = type });
+			resources.Add(new Resource() { Name = "Fruta", Type = type2 });
+			resources.Add(new Resource() { Name = "Peces", Type = type2 });
+			resources.Add(new Resource() { Name = "Piedra", Type = type3 });
+			return resources;
+		}
     }
 }
