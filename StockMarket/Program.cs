@@ -8,6 +8,8 @@ using StockMarket.Utils;
 using System.Diagnostics;
 using StockMarket.Models.Market;
 using StockMarket.Models.Common;
+using StockMarket.LoadEngine;
+using StockMarket.Models.Map;
 
 namespace StockMarket
 {
@@ -15,7 +17,27 @@ namespace StockMarket
     {
         static void Main(string[] args)
         {
-			pruebaMarket();
+			var buildings = new List<Building>();
+			buildings.Add(new Building() { Name = "Aserradero" });
+			//public static string filePath = @"C:\Users\Alberto\Desktop\";
+			Configuration.SaveItem<Building>(buildings, @"C:\Users\Alberto\Desktop\Buildings.txt");
+			var buildings2 = Configuration.LoadItem<Building>(@"C:\Users\Alberto\Desktop\Buildings.txt");
+			string a = "";
+
+			//var cosa = -1 % 20;
+			//HexMap Map = new HexMap(20, 20);
+			//var tiles = Map.getSurroundedTiles(1, 2, 3);
+			//foreach(var item in tiles.GroupBy(x => x.xPosition).OrderBy(x=>x.Key))
+			//{
+			//	Console.WriteLine("");
+			//	foreach(var tile in item.OrderBy(x=>x.yPosition))
+			//	{
+			//		Console.Write(tile.ToString());
+			//	}
+			//}
+
+			//string a = "";
+			//pruebaMarket();
 			///TODO Crear funcion para la integral de la funcion original dentro de demandCurve
 			///TODO Expresiones del modulo Math (log,max,min...)  
 
@@ -107,16 +129,16 @@ namespace StockMarket
 			}
 			m.CurrentStock.addResources(resourceQ);
 			ConcurrentExchangePetition petition = new ConcurrentExchangePetition();
-			Owner owner1 = new Owner() { name = "owner1" };
-			Owner owner2 = new Owner() { name = "owner2" };
+			Player owner1 = new Player() { name = "owner1" };
+			Player owner2 = new Player() { name = "owner2" };
 			var resourcesOwner1 = new List<ResourceQuantityMarket>();
 			resourcesOwner1.Add(new ResourceQuantityMarket() { Quantity = 3, Resource = resources[1],petitionType = Enumerables.ExpressionEnumerables.petitionType.BUY });
 			resourcesOwner1.Add(new ResourceQuantityMarket() { Quantity = 3, Resource = resources[0], petitionType = Enumerables.ExpressionEnumerables.petitionType.SELL });
-			petition.Petitions.Add(new OwnerPetition() { Owner = owner1, Resources = resourcesOwner1 });
+			petition.Petitions.Add(new PlayerPetition() { Owner = owner1, Resources = resourcesOwner1 });
 			var resourcesOwner2 = new List<ResourceQuantityMarket>();
 			resourcesOwner2.Add(new ResourceQuantityMarket() { Quantity = 2, Resource = resources[2], petitionType = Enumerables.ExpressionEnumerables.petitionType.BUY });
 			resourcesOwner2.Add(new ResourceQuantityMarket() { Quantity = 5, Resource = resources[1], petitionType = Enumerables.ExpressionEnumerables.petitionType.SELL });
-			petition.Petitions.Add(new OwnerPetition() { Owner = owner2, Resources = resourcesOwner2 });
+			petition.Petitions.Add(new PlayerPetition() { Owner = owner2, Resources = resourcesOwner2 });
 			List<DemandCurveResources> curves = new List<DemandCurveResources>();
 			var curve = new DemandCurveResources();
 			curve.resources = resources;

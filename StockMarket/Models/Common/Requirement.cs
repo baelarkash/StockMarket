@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StockMarket.Models.Interfaces;
 
 namespace StockMarket.Models.Common
 {
-	public class Owner
+	public class Requirement
 	{
-		public string name { get; set; }
+		public int Amount { get; set; }
+		public IRequired Object { get; set; }
 	}
 }

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace StockMarket.Models.Market
 {
-	public class OwnerPetition
+	public class PlayerPetition
 	{
-		public Owner Owner { get; set; }
+		public Player Owner { get; set; }
 		public List<ResourceQuantityMarket> Resources { get; set; }
 
 	}

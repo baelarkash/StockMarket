@@ -33,6 +33,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
@@ -46,15 +47,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enumerables\ExpressionEnumerables.cs" />
+    <Compile Include="LoadEngine\Configuration.cs" />
+    <Compile Include="Logic\GameController.cs" />
+    <Compile Include="Models\Common\Building.cs" />
+    <Compile Include="Models\Common\Job.cs" />
+    <Compile Include="Models\Common\Machinery.cs" />
+    <Compile Include="Models\Common\Requirement.cs" />
+    <Compile Include="Models\Common\Research.cs" />
+    <Compile Include="Models\Common\Tool.cs" />
+    <Compile Include="Models\Common\Worker.cs" />
+    <Compile Include="Models\Common\WorkerJob.cs" />
+    <Compile Include="Models\Interfaces\IConfigurable.cs" />
+    <Compile Include="Models\Interfaces\IRequired.cs" />
+    <Compile Include="Models\Interfaces\IResearchableItem.cs" />
+    <Compile Include="Models\Map\HexMap.cs" />
+    <Compile Include="Models\Map\MapResource.cs" />
+    <Compile Include="Models\Map\Tile.cs" />
+    <Compile Include="Models\Map\TileType.cs" />
     <Compile Include="Models\Market\ComplexExpression.cs" />
     <Compile Include="Models\Market\ComplexFunction.cs" />
     <Compile Include="Models\Market\ConcurrentExchangePetition.cs" />
     <Compile Include="Models\Market\ConcurrentExchangeResponse.cs" />
     <Compile Include="Models\Market\DemandCurveParameters.cs" />
     <Compile Include="Models\Market\InternalFunction.cs" />
-    <Compile Include="Models\Common\Owner.cs" />
-    <Compile Include="Models\Market\OwnerPetition.cs" />
-    <Compile Include="Models\Market\OwnerResponse.cs" />
+    <Compile Include="Models\Common\Player.cs" />
+    <Compile Include="Models\Market\PlayerPetition.cs" />
+    <Compile Include="Models\Market\PlayerResponse.cs" />
     <Compile Include="Models\Market\Parameter.cs" />
     <Compile Include="Models\Market\DemandCurveResources.cs" />
     <Compile Include="Program.cs" />
@@ -69,9 +87,7 @@
     <Compile Include="Utils\ExpressionReader.cs" />
     <Compile Include="Utils\ExpressionVariables.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Logic\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />

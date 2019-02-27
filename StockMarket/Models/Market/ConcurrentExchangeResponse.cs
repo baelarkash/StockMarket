@@ -8,6 +8,6 @@ namespace StockMarket.Models.Market
 {
 	public class ConcurrentExchangeResponse
 	{
-		public List<OwnerResponse> Responses { get; set; }
+		public List<PlayerResponse> Responses { get; set; }
 	}
 }
