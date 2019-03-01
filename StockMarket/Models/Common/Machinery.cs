@@ -7,7 +7,7 @@ using StockMarket.Models.Interfaces;
 
 namespace StockMarket.Models.Common
 {
-	public class Machinery:IResearchableItem, IRequired, IConfigurable
+	public class Machinery: Upgrade, IResearchableItem, IRequired, IConfigurable
 	{
 		public string Name { get; set; }
 		List<Requirement> Requirements { get; set; }

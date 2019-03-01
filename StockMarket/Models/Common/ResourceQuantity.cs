@@ -13,7 +13,7 @@ namespace StockMarket.Models.Common
     }
 	public class ResourceQuantityMarket:ResourceQuantity
 	{
-		public  Enumerables.ExpressionEnumerables.petitionType petitionType { get; set; }
+		public Enumerables.ExpressionEnumerables.petitionType petitionType { get; set; }
 		
 	}
 }

@@ -15,7 +15,8 @@ namespace StockMarket.Models.Map
 		public TileType SecondaryTileType { get; set; }
 		public MapResource MapResource { get; set; }
 		public List<Worker> Workers { get; set; }
-
+		public Job ActiveJob { get; set; }
+		public Building Building { get; set; }
 		public Tile(int x, int y)
 		{
 			this.xPosition = x;

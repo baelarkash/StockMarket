@@ -33,7 +33,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
@@ -46,8 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\GlobalParameters.cs" />
     <Compile Include="Enumerables\ExpressionEnumerables.cs" />
-    <Compile Include="LoadEngine\Configuration.cs" />
+    <Compile Include="Configuration\Configuration.cs" />
+    <Compile Include="Enumerables\UtilsEnumerables.cs" />
     <Compile Include="Logic\GameController.cs" />
     <Compile Include="Models\Common\Building.cs" />
     <Compile Include="Models\Common\Job.cs" />
@@ -55,6 +59,8 @@
     <Compile Include="Models\Common\Requirement.cs" />
     <Compile Include="Models\Common\Research.cs" />
     <Compile Include="Models\Common\Tool.cs" />
+    <Compile Include="Models\Common\Upgrade.cs" />
+    <Compile Include="Models\Common\UpgradeItem.cs" />
     <Compile Include="Models\Common\Worker.cs" />
     <Compile Include="Models\Common\WorkerJob.cs" />
     <Compile Include="Models\Interfaces\IConfigurable.cs" />
@@ -86,8 +92,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ExpressionReader.cs" />
     <Compile Include="Utils\ExpressionVariables.cs" />
+    <Compile Include="Utils\ResourceUtils.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />

@@ -7,10 +7,11 @@ using StockMarket.Models.Interfaces;
 
 namespace StockMarket.Models.Common
 {
-	public class Building : IResearchableItem,IRequired,IConfigurable
+	public class Building : Upgrade, IResearchableItem,IRequired,IConfigurable
 	{
 		public string Name { get; set; }
-		List<Requirement> Requirements { get; set; }
+		public List<Requirement> Requirements { get; set; }
+		public List<Machinery> Machineries { get; set; }
 		public Building()
 		{
 			Requirements = new List<Requirement>();

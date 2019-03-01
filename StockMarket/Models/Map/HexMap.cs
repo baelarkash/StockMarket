@@ -11,6 +11,7 @@ namespace StockMarket.Models.Map
 		public Tile[,] Map { get; set; }
 		public int ySize { get; set; }
 		public int xSize { get; set; }
+
 		public HexMap(int x, int y)
 		{
 			Map = new Tile[x, y];
@@ -24,6 +25,7 @@ namespace StockMarket.Models.Map
 			ySize = y;
 			xSize = x;
 		}
+
 		public IEnumerable<Tile> getSurroundedTiles(int x, int y, int distance)
 		{
 			List<Tile> tiles = new List<Tile>();

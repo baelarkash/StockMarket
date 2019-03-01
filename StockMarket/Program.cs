@@ -8,20 +8,41 @@ using StockMarket.Utils;
 using System.Diagnostics;
 using StockMarket.Models.Market;
 using StockMarket.Models.Common;
-using StockMarket.LoadEngine;
+using StockMarket.Configuration;
 using StockMarket.Models.Map;
+using System.Globalization;
 
 namespace StockMarket
 {
     class Program
     {
-        static void Main(string[] args)
+		///TODO Crear funcion para la integral de la funcion original dentro de demandCurve
+		///TODO Expresiones del modulo Math (log,max,min...)  
+
+		///TODO controlar la venta de recursos para que no sea menor que 0
+		///TODO Gestionar peticiones de compra y venta simultaneas para distintas peticiones
+		///TODO Problema con 2q^2, eleva todo al cuadrado
+		///TODO Encriptar ficheros de Configuracion
+		///TODO Area de influencia para generar mas recursos
+		static void Main(string[] args)
         {
+			//string nombre1 = "Napoles";
+			//string nombre2 = "Nápoles";
+			//System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+			//System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+			//var result = String.Compare(nombre1, nombre2, System.Globalization.CultureInfo.CurrentCulture, System.Globalization.CompareOptions.IgnoreNonSpace) == 0;
+			//string a = "";
+
+
+
 			var buildings = new List<Building>();
-			buildings.Add(new Building() { Name = "Aserradero" });
+			var b1 = new Building() { Name = "Aserradero" };
+			b1.Requirements = new List<Requirement>();
+			b1.Requirements.Add(new Requirement() { Amount = 1, Object = new Building() { Name = "Casa" } });
+			buildings.Add(b1);
 			//public static string filePath = @"C:\Users\Alberto\Desktop\";
-			Configuration.SaveItem<Building>(buildings, @"C:\Users\Alberto\Desktop\Buildings.txt");
-			var buildings2 = Configuration.LoadItem<Building>(@"C:\Users\Alberto\Desktop\Buildings.txt");
+			Configuration.Configuration.SaveItem<Building>(buildings, @"C:\Users\Alberto\Desktop\Buildings.txt");
+			var buildings2 = Configuration.Configuration.LoadItem<Building>(@"C:\Users\Alberto\Desktop\Buildings.txt");
 			string a = "";
 
 			//var cosa = -1 % 20;
@@ -38,12 +59,6 @@ namespace StockMarket
 
 			//string a = "";
 			//pruebaMarket();
-			///TODO Crear funcion para la integral de la funcion original dentro de demandCurve
-			///TODO Expresiones del modulo Math (log,max,min...)  
-
-			///TODO controlar la venta de recursos para que no sea menor que 0
-			///TODO Gestionar peticiones de compra y venta simultaneas para distintas peticiones
-			///TODO Problema con 2q^2, eleva todo al cuadrado
 
 		}
 		public static void timeTest()

@@ -9,16 +9,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StockMarket.LoadEngine
+namespace StockMarket.Configuration
 {
 	public static class Configuration
 	{
+		private static List<Building> buildings;
+		private static List<Job> jobs;
+		private static List<Machinery> machineries;
+		private static List<Research> researches;
+		private static List<Resource> resources;
+		private static List<ResourceType> resourceTypes;
+		private static List<Tool> tools;
+
+
 		public static void SaveItem<T>(List<T> items,string filePath) where T : IConfigurable
 		{
-			JsonSerializer serializer = new JsonSerializer();
+			JsonSerializer serializer = new JsonSerializer() {
+				NullValueHandling = NullValueHandling.Ignore,
+				TypeNameHandling = TypeNameHandling.Auto				
+			};
 			serializer.Converters.Add(new JavaScriptDateTimeConverter());
-			serializer.NullValueHandling = NullValueHandling.Ignore;
-
+			
 			using (StreamWriter sw = new StreamWriter(filePath))
 
 			using (JsonWriter writer = new JsonTextWriter(sw))
@@ -29,10 +40,9 @@ namespace StockMarket.LoadEngine
 		public static List<T> LoadItem<T>(string filePath) where T : IConfigurable
 		{
 			List<T> item = null;
-			// deserialize JSON directly from a file
 			using (StreamReader file = File.OpenText(filePath))
 			{
-				JsonSerializer serializer = new JsonSerializer();
+				JsonSerializer serializer = new JsonSerializer() { TypeNameHandling = TypeNameHandling.Auto };				
 				item = (List<T>)serializer.Deserialize(file, typeof(List<Building>));
 			}
 			return item;

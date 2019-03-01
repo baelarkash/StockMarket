@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StockMarket.Models.Interfaces;
 
 namespace StockMarket.Models.Map
 {
-	public class MapResource
+	public class MapResource:IConfigurable
 	{
 		public int MapResourceId { get; set; }
 		public string Name { get; set; }
