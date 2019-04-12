@@ -12,11 +12,12 @@ namespace StockMarket.Models.Common
 		public string Name { get; set; }
 		public int Tier { get; set; }
 		public List<ResourceQuantity> BaseProduction { get; set; }
-		public List<Requirement> Requirements { get; set; }
+		public Requirements Requirements { get; set; }
 		public override bool Equals(object obj)
 		{
 			return this.Name == ((Job)obj).Name;
 		}
+
 		public void Unlocked() { }
 	}
 }

@@ -10,10 +10,11 @@ namespace StockMarket.Models.Common
 	public class Machinery: Upgrade, IResearchableItem, IRequired, IConfigurable
 	{
 		public string Name { get; set; }
-		List<Requirement> Requirements { get; set; }
+		Requirements Requirements { get; set; }
+		public int Tier { get; set; }
 		public Machinery()
 		{
-			this.Requirements = new List<Requirement>();
+			
 		}
 		public void Unlocked() { }
 	}

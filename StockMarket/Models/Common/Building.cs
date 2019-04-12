@@ -10,11 +10,14 @@ namespace StockMarket.Models.Common
 	public class Building : Upgrade, IResearchableItem,IRequired,IConfigurable
 	{
 		public string Name { get; set; }
-		public List<Requirement> Requirements { get; set; }
+		public Requirements Requirements { get; set; }
 		public List<Machinery> Machineries { get; set; }
+		public int Tier { get; set; }
+		public int Size { get; set; }
+
 		public Building()
 		{
-			Requirements = new List<Requirement>();
+			
 		}
 		public void Unlocked() { }
 	}

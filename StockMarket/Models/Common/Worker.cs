@@ -28,5 +28,24 @@ namespace StockMarket.Models.Common
 				Jobs.Add(new WorkerJob(job, experience));
 			}
 		}
+		public bool changeJob(Job newJob)
+		{
+			bool resultado = true;
+			var requirements = newJob.Requirements.getRequirements<WorkerJob>();
+			foreach(var requirement in requirements)
+			{
+				var aux = this.Jobs.FirstOrDefault(x => x.Job == requirement.Job);
+				if (aux == null|| aux.Level >= requirement.Level) {
+					resultado = false;
+					break;
+				}
+			}
+			var jobToAdd = this.Jobs.FirstOrDefault(x => x.Job == newJob);
+			if (jobToAdd == null)
+			{
+				this.Jobs.Add(new WorkerJob(newJob,0));
+			}
+			return resultado;
+		}
 	}
 }

@@ -9,7 +9,9 @@ namespace StockMarket.Models.Map
 {
 	public class TileType:IConfigurable
 	{
+		#region "Properties"
 		public int TileTypeId { get; set; }
 		public string Name { get; set; }
+		#endregion
 	}
 }

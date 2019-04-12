@@ -10,8 +10,10 @@ namespace StockMarket.Models.Map
 {
 	public class MapResource:IConfigurable
 	{
+		#region "Properties"
 		public int MapResourceId { get; set; }
 		public string Name { get; set; }
 		public List<Resource> Resources { get; set; }
+		#endregion
 	}
 }

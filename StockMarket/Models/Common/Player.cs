@@ -11,16 +11,22 @@ namespace StockMarket.Models.Common
 {
 	public class Player
 	{
+		#region "Properties"
+		
 		public string name { get; set; }
 		public HexMap Map { get; set; }
 		public List<Worker> Workers { get; set; }
-		public List<Tile> OcuppiedTiles { get; set; }
+		public int Money { get; set; }
+		public List<Job> avaliableJobs { get; set; }
+		#endregion
+		#region "Methods"
+		
 		public List<ResourceQuantity> GetProduction()
 		{
 			var result = new List<ResourceQuantity>();
-			foreach (var tile in OcuppiedTiles)
+			foreach (var tile in Map.OcuppiedTiles)
 			{
-				foreach (var worker in Workers)
+				foreach (var worker in tile.Workers)
 				{
 					//var job = worker.Jobs.FirstOrDefault(x => x.Job == tile.ActiveJob);
 					var job = tile.ActiveJob;					
@@ -47,9 +53,9 @@ namespace StockMarket.Models.Common
 							}
 							if (aux != null) { aux.addUpgradeValue(ref flatProduction, ref percentageProduction); }
 						}
-						var production = (flatProduction * percentageProduction / 100);
+						var production = flatProduction + (flatProduction * percentageProduction / 100);
 						var auxiliar = worker.Jobs.FirstOrDefault(x => x.Job == job);
-						production *= auxiliar != null?(auxiliar.Level - 1) * (Configuration.GlobalParameters.gainPerLevel / 100):1;
+						production *= auxiliar != null?(1 + (auxiliar.Level - 1) * (Configuration.GlobalParameters.gainPerLevel / 100)):1;
 						result = ResourceUtils.addResource(new ResourceQuantity() { Quantity = production, Resource = resourceProduction.Resource }, result);
 						worker.addExperience(job, production);
 					}
@@ -58,6 +64,8 @@ namespace StockMarket.Models.Common
 			}
 			return result;
 		}
-
+		
+		#endregion
 	}
+	
 }

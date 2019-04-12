@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StockMarket.Models.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,15 @@ namespace StockMarket.Models.Map
 {
 	public class HexMap
 	{
+		#region "Properties"
+
 		public Tile[,] Map { get; set; }
 		public int ySize { get; set; }
 		public int xSize { get; set; }
+		public List<Tile> OcuppiedTiles { get; set; }
+
+		#endregion
+		#region "Constructor"
 
 		public HexMap(int x, int y)
 		{
@@ -26,6 +33,8 @@ namespace StockMarket.Models.Map
 			xSize = x;
 		}
 
+		#endregion
+		#region "Methods"
 		public IEnumerable<Tile> getSurroundedTiles(int x, int y, int distance)
 		{
 			List<Tile> tiles = new List<Tile>();
@@ -83,5 +92,11 @@ namespace StockMarket.Models.Map
 			}
 			return tiles.Distinct();
 		}
+		public void changeActiveJob(Tile tile,Job job)
+		{			
+			tile.changeActiveJob(job);
+		}
+		#endregion
+
 	}
 }

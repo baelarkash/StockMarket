@@ -10,14 +10,16 @@ namespace StockMarket.Models.Common
 	public class Research : IResearchableItem, IRequired, IConfigurable
 	{
 		public string Name { get; set; }
-		List<Requirement> Requirements { get; set; }
+		public Requirements Requirements { get; set; }
+		List<IResearchableItem> UnlockedItems { get; set; }
+		public int Tier { get; set; }
 		public Research()
 		{
-			this.Requirements = new List<Requirement>();
+			
 		}
 		public void Unlocked()
 		{
-
+			
 		}
 	}
 }

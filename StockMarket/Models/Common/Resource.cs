@@ -10,7 +10,7 @@ namespace StockMarket.Models.Common
     public class Resource: IConfigurable
 	{
         public string Name { get; set; }
-        public ResourceType Type { get; set; }
+        public List<ResourceType> Type { get; set; }
         public override bool Equals(object obj)
         {
 			//Resource aux = (Resource)obj;

@@ -13,6 +13,11 @@ namespace StockMarket.Enumerables
 			FLAT,
 			PERCENTAGE
 		}
-
+		public enum upgradeType
+		{
+			BUILDING,
+			TOOL,
+			MACHINERY
+		}
 	}
 }

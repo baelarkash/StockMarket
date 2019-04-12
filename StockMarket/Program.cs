@@ -37,12 +37,12 @@ namespace StockMarket
 
 			var buildings = new List<Building>();
 			var b1 = new Building() { Name = "Aserradero" };
-			b1.Requirements = new List<Requirement>();
-			b1.Requirements.Add(new Requirement() { Amount = 1, Object = new Building() { Name = "Casa" } });
+			//b1.Requirements = new List<Requirement>();
+			//b1.Requirements.Add(new Requirement() { Amount = 1, Object = new Building() { Name = "Casa" } });
 			buildings.Add(b1);
 			//public static string filePath = @"C:\Users\Alberto\Desktop\";
-			Configuration.Configuration.SaveItem<Building>(buildings, @"C:\Users\Alberto\Desktop\Buildings.txt");
-			var buildings2 = Configuration.Configuration.LoadItem<Building>(@"C:\Users\Alberto\Desktop\Buildings.txt");
+			Configuration.Configuration.SaveItemList<Building>(buildings, @"C:\Users\Alberto\Desktop\Buildings.txt");
+			var buildings2 = Configuration.Configuration.LoadItemList<Building>(@"C:\Users\Alberto\Desktop\Buildings.txt");
 			string a = "";
 
 			//var cosa = -1 % 20;
@@ -169,10 +169,10 @@ namespace StockMarket
 			ResourceType type = new ResourceType() { Name = "Madera" };
 			ResourceType type2 = new ResourceType() { Name = "Comida" };
 			ResourceType type3 = new ResourceType() { Name = "Piedra" };
-			resources.Add(new Resource() { Name = "Madera", Type = type });
-			resources.Add(new Resource() { Name = "Fruta", Type = type2 });
-			resources.Add(new Resource() { Name = "Peces", Type = type2 });
-			resources.Add(new Resource() { Name = "Piedra", Type = type3 });
+			//resources.Add(new Resource() { Name = "Madera", Type = type });
+			//resources.Add(new Resource() { Name = "Fruta", Type = type2 });
+			//resources.Add(new Resource() { Name = "Peces", Type = type2 });
+			//resources.Add(new Resource() { Name = "Piedra", Type = type3 });
 			return resources;
 		}
     }

@@ -10,10 +10,10 @@ namespace StockMarket.Models.Common
 	public class Tool : Upgrade, IResearchableItem,IRequired, IConfigurable
 	{
 		public string Name { get; set; }
-		public List<Requirement> Requirements { get; set; }
+		public Requirements Requirements { get; set; }
 		public Tool()
 		{
-			Requirements = new List<Requirement>();
+			
 		}
 		public void Unlocked()
 		{

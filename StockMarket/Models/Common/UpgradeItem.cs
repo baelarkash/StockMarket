@@ -12,6 +12,7 @@ namespace StockMarket.Models.Common
 		public Resource Resource { get; set; }
 		public double Value { get; set; }
 		public UtilsEnumerables.benefitType BenefitType { get; set; }
+		public UtilsEnumerables.upgradeType UpgradeType { get; set; }
 		public void addUpgradeValue(ref double flat,ref double percentage)
 		{
 			if(BenefitType == UtilsEnumerables.benefitType.FLAT)

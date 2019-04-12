@@ -26,7 +26,7 @@ namespace StockMarket.Models.Market
             DemandCurve curve;
             curve = demandCurves.FirstOrDefault(x => x.resources.Any(y => y == resource)).demandCurve;
             if (curve==null) {
-                curve = demandCurves.FirstOrDefault(x => x.resourceTypes.Any(y => y.Name == resource.Type.Name)).demandCurve;
+                curve = demandCurves.FirstOrDefault(x => x.resourceTypes.Any(y => resource.Type.Contains(y))).demandCurve;
             }
             return curve;
         }

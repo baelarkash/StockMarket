@@ -8,7 +8,11 @@ namespace StockMarket.Logic
 {
 	public static class GameController
 	{
+		#region "Properties"
+		
 		public static List<Player> Player { get; set; }
+		#endregion
+		#region "Methods"
 
 		public static void takeTurn()
 		{
@@ -18,6 +22,6 @@ namespace StockMarket.Logic
 			//Trade Resources
 
 		}
-
+		#endregion
 	}
 }
