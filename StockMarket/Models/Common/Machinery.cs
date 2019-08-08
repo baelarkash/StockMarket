@@ -17,5 +17,13 @@ namespace StockMarket.Models.Common
 			
 		}
 		public void Unlocked() { }
+		public static bool operator ==(Machinery item, Machinery comparison)
+		{
+			return item.Name == (comparison).Name;
+		}
+		public static bool operator !=(Machinery item, Machinery comparison)
+		{
+			return item.Name != (comparison).Name;
+		}
 	}
 }

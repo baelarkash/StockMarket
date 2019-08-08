@@ -21,5 +21,13 @@ namespace StockMarket.Models.Common
 		{
 			
 		}
+		public static bool operator ==(Research item, Research comparison)
+		{
+			return item.Name == (comparison).Name;
+		}
+		public static bool operator !=(Research item, Research comparison)
+		{
+			return item.Name != (comparison).Name;
+		}
 	}
 }

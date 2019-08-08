@@ -41,8 +41,9 @@ namespace StockMarket
 			//b1.Requirements.Add(new Requirement() { Amount = 1, Object = new Building() { Name = "Casa" } });
 			buildings.Add(b1);
 			//public static string filePath = @"C:\Users\Alberto\Desktop\";
-			Configuration.Configuration.SaveItemList<Building>(buildings, @"C:\Users\Alberto\Desktop\Buildings.txt");
-			var buildings2 = Configuration.Configuration.LoadItemList<Building>(@"C:\Users\Alberto\Desktop\Buildings.txt");
+			Configuration.Configuration.loadConfiguration();
+			//<Building>(buildings, @"C:\Users\Alberto\Desktop\Buildings.txt");
+			//var buildings2 = Configuration.Configuration.LoadItemList<Building>(@"C:\Users\Alberto\Desktop\Buildings.txt");
 			string a = "";
 
 			//var cosa = -1 % 20;

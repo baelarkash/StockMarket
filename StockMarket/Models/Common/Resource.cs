@@ -17,5 +17,13 @@ namespace StockMarket.Models.Common
 			//return this.Name == aux.Name && this.Type == aux.Type;
 			return this.Name == ((Resource)obj).Name;
 		}
-    }
+		public static bool operator ==(Resource item, Resource comparison)
+		{
+			return item.Name == (comparison).Name;
+		}
+		public static bool operator !=(Resource item, Resource comparison)
+		{
+			return item.Name != (comparison).Name;
+		}
+	}
 }

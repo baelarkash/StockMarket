@@ -63,9 +63,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\Configuration.cs" />
     <Compile Include="Configuration\GlobalParameters.cs" />
     <Compile Include="Enumerables\ExpressionEnumerables.cs" />
-    <Compile Include="Configuration\Configuration.cs" />
+    <Compile Include="Configuration\ConfigurationUtils.cs" />
     <Compile Include="Enumerables\UtilsEnumerables.cs" />
     <Compile Include="Logic\GameController.cs" />
     <Compile Include="Logic\PlayerController.cs" />
@@ -123,6 +124,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
